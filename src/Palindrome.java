@@ -2,7 +2,6 @@
 public class Palindrome {
 	public static void main(String[] args) {
 		System.out.println(longestPalindrome("bannnaaaa"));
-		
 	}
 	
 	public static String longestPalindrome(String s) {
