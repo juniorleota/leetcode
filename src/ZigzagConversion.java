@@ -3,7 +3,6 @@ public class ZigzagConversion {
 	public static void main(String[] args) {
 		// expect PAHNAPLSIIGYIR
 		System.out.println(convert("PAYPALISHIRING",3));
-//		System.out.println(numLettersPerRow("PAYPALISHIRING", 4, 1));
 	}
 	
 	public static String convert(String s, int numRows) {
@@ -34,11 +33,4 @@ public class ZigzagConversion {
 		}
 		return sb.toString();
 	}
-	
-//	public static int numLettersPerRow(String s, int numRows, int row){
-//		int zig = (numRows - row)*2;
-//		int zag = row*2;
-//		
-//		
-//	}
 }
