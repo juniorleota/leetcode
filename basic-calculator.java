@@ -1,55 +1,58 @@
-/**
-* Need major refactoring but works very quickly.
-**/
 class Solution {
     public int calculate(String s) {
-        return calculate(s.trim(), -1).result;
+        return calculate(0, s).result;
     }
     
-    RecursiveResult calculate(String s, int parenI) {
+    Result calculate(int start, String s) {
+        int num = 0, lastI = 0;
         Stack<Integer> stack = new Stack<>();
-        int num = 0;
-        // random char
-        char lastOp = '^';
-        int lastI = 0;
-        for(int i=parenI + 1; i<s.length(); i++) {
+        // store lastOperation so we know if we want to invert the new number
+        char lastOp = ' ';
+        for(int i = start; i < s.length(); i++) {
             char c = s.charAt(i);
-            
-            if(Character.isDigit(c)) {
-                num = num * 10 + (c-'0');
+            boolean digit = Character.isDigit(c);
+            boolean lastElem = i == s.length() - 1;
+
+            if (digit) {
+                num = num * 10 + c-'0';
             }
             
-            if (c == '(') {
-                RecursiveResult recursiveResult = calculate(s, i);
-                i = recursiveResult.i;
-                num = recursiveResult.result;
-            }
-            
-            if((!Character.isDigit(c) && c != ' ') || i == s.length() - 1) {
-                if (lastOp == '-') stack.push(num * -1);
-                else stack.push(num);
+            if ((!digit && c != ' ') || lastElem) {
+                if (c == '(') {
+                    Result res = calculate(i+1, s);
+                    num = res.result;
+                    i = res.i;
+                    // if you use continue here, it will fail if the last char is ')'
+                }
+                
+                // add before potentially breaking out of loop
+                if (lastOp == '-') stack.add(num * -1);
+                else stack.add(num);
                 
                 if (c == ')') {
                     lastI = i;
                     break;
                 }
-
-                num = 0;
+                
                 if (c == '+' || c == '-') {
                     lastOp = c;
                 }
+                
+                num = 0;
             }
         }
         int result = 0;
         for(int x: stack) result += x;
-        return new RecursiveResult(result, lastI);
+        
+        return new Result(lastI, result);
     }
     
-    class RecursiveResult {
-        int result,i;
-        public RecursiveResult(int result, int i) {
-            this.result = result;
+    class Result {
+        int i,result;
+        
+        public Result(int i, int result) {
             this.i = i;
+            this.result = result;
         }
     }
 }
