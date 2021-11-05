@@ -33,15 +33,12 @@ class Solution {
                     lastI = i;
                     break;
                 }
-                
+
                 num = 0;
                 if (c == '+' || c == '-') {
                     lastOp = c;
                 }
-                //System.out.println(c + " " + stack);
             }
-            
-            lastI = i;
         }
         int result = 0;
         for(int x: stack) result += x;
