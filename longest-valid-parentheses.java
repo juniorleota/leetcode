@@ -7,6 +7,7 @@ class Solution {
             char c = s.charAt(i);
             if (c == '(') {
                 lCount ++;
+                // 0 used as marker for open parenthesis
                 stack.add(0);
             } else if (c == ')') {
                 rCount++;
