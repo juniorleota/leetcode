@@ -1,16 +1,14 @@
 class Solution {
     public int longestValidParentheses(String s) {
         Stack<Integer> stack = new Stack<>();
-        int longestParen = 0;
+        int maxLength = 0;
         int lCount = 0, rCount = 0;
         for(int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             if (c == '(') {
                 lCount ++;
                 stack.add(0);
-            }
-            
-            if (c == ')') {
+            } else if (c == ')') {
                 rCount++;
                 boolean valid = lCount >= rCount;
                 if (!valid) {
@@ -30,9 +28,9 @@ class Solution {
                 if (!stack.empty() && stack.peek() != 0) subLength += stack.pop();
                 int newValidLength = subLength + 2;
                 stack.add(newValidLength);
-                longestParen = Math.max(longestParen, newValidLength);
+                maxLength = Math.max(maxLength, newValidLength);
             }
         }
-        return longestParen;
+        return maxLength;
     }
 }
