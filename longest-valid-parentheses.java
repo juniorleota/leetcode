@@ -5,7 +5,6 @@ class Solution {
         int lCount = 0, rCount = 0;
         for(int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
-            //System.out.println(c + " " + stack);
             if (c == '(') {
                 lCount ++;
                 stack.add(0);
@@ -15,7 +14,7 @@ class Solution {
                 rCount++;
                 boolean valid = lCount >= rCount;
                 if (!valid) {
-                    longestParen = Math.max(longestParen, getMaxElement(stack));
+                    stack.clear();
                     rCount = 0;
                     lCount = 0;
                     continue;
@@ -29,17 +28,11 @@ class Solution {
                 }
                 // link connected valid parenthesis
                 if (!stack.empty() && stack.peek() != 0) subLength += stack.pop();
-                stack.add(subLength + 2);
+                int newValidLength = subLength + 2;
+                stack.add(newValidLength);
+                longestParen = Math.max(longestParen, newValidLength);
             }
         }
-        if (!stack.empty()) longestParen = Math.max(longestParen, getMaxElement(stack));
         return longestParen;
-    }
-    
-    int getMaxElement(Stack<Integer> stack) {
-        int result = 0;
-        while(!stack.empty()) result = Math.max(result, stack.pop());
-        
-        return result;
     }
 }
