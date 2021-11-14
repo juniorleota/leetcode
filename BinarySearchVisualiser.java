@@ -1,9 +1,17 @@
 public class BinarySearchVisualiser {
-    public static void printBS(int[] arr, int l, int m, int h) {
+    /**
+     * Prints out binary search state in the current format [1ₗ, 1, 1, 2, 2, 2, 3ₘ, 3, 3, 4, 4, 4, 4ₕ].
+     *
+     * @param arr array current being binary searched
+     * @param l   low pointer
+     * @param m   mid pointer
+     * @param h   high pointer
+     */
+    public static void print(int[] arr, int l, int m, int h) {
         int n = arr.length;
         StringBuilder sb = new StringBuilder();
         sb.append("[");
-        for(int i = 0; i < n; i++) {
+        for (int i = 0; i < n; i++) {
             String elem = genCurrentElement(arr, i, l, m, h);
             sb.append(elem);
             if (i < n - 1) {
