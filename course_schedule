@@ -1,74 +1,68 @@
 class Solution {
-  public boolean canFinish(int numCourses, int[][] prerequisites) {
-    Map<Integer, Course> courses = new HashMap<Integer, Course>();
-    Arrays.stream(prerequisites).forEach(e -> {
-      int course = e[0];
-      int prereq = e[1];
-      courses.putIfAbsent(course, new Course(course));
-      courses.putIfAbsent(prereq, new Course(prereq));
-      
-      courses.get(course).addPrereq(courses.get(prereq));
-    });
-    
-    System.out.println(courses);
-    // detect if there is a loop for each of the courses
-    for(Course c: courses.values()) {
-      if (detectCycle(c)) return false;
-    }
-    
-    return true;
-  }
-  
-  boolean detectCycle(Course course) {
-    if (course.colour == Colour.BLACK) return false;
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        var courses = new HashMap<Integer, Course>();
+        Arrays.stream(prerequisites).forEach(e -> {
+            int course = e[0];
+            int prereq = e[1];
+            courses.putIfAbsent(course, new Course(course));
+            courses.putIfAbsent(prereq, new Course(prereq));
 
-    course.colour = Colour.GRAY;
-    for (Course p: course.prereqs) {
-      if (p.colour == Colour.GRAY) return true;
-      if (detectCycle(p)) return true;
+            courses.get(course).addPrereq(courses.get(prereq));
+        });
+
+        // detect if there is a loop for each of the courses
+        for (Course c : courses.values()) {
+            if (detectCycle(c)) return false;
+        }
+
+        return true;
     }
-    course.colour = Colour.BLACK;
-    return false;
-  }
+
+    boolean detectCycle(Course course) {
+        if (course.status == Status.SEARCHED) return false;
+
+        course.status = Status.SEEN;
+        for (Course p : course.prereqs) {
+            if (p.status == Status.SEEN) return true;
+            if (detectCycle(p)) return true;
+        }
+        course.status = Status.SEARCHED;
+        return false;
+    }
 }
 
 class Course {
-  // this might be redundant
-  int id;
-  List<Course> prereqs;
-  boolean visited;
-  boolean tested;
-  Colour colour;
-  
-  
-  public Course(int id) {
-    this.id = id;
-    this.prereqs = new ArrayList<Course>();
-    this.colour = Colour.WHITE;
-  }
-  
-  void addPrereq(Course c) {
-    this.prereqs.add(c);
-  }
-  
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("[");
-    sb.append(prereqs.stream()
-      .map(x -> Integer.toString(x.id))
-      .collect(Collectors.joining(", "))
-    );
-    sb.append("]");
-    return sb.toString();
-  }
+    int id;
+    List<Course> prereqs;
+    Status status;
+
+
+    public Course(int id) {
+        this.id = id;
+        this.prereqs = new ArrayList<>();
+        this.status = Status.NOT_SEEN;
+    }
+
+    void addPrereq(Course c) {
+        this.prereqs.add(c);
+    }
+
+    @Override
+    public String toString() {
+        // needed to avoid memory overflow when there is a loop
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        sb.append(prereqs.stream()
+                .map(x -> Integer.toString(x.id))
+                .collect(Collectors.joining(", "))
+        );
+        sb.append("]");
+        return sb.toString();
+    }
 }
 
-enum Colour {
-  // not actioned
-  WHITE, 
-  // currently being tested but not fully
-  GRAY, 
-  // fully searched and no cycle
-  BLACK;
+enum Status {
+    NOT_SEEN,
+    SEEN,
+    SEARCHED;
 }
