@@ -9,9 +9,12 @@ class Solution {
       
       courses.get(course).addPrereq(courses.get(prereq));
     });
+    
+    System.out.println(courses);
     // detect if there is a loop for each of the courses
-    for(Course c: courses.values())
+    for(Course c: courses.values()) {
       if (detectCycle(c)) return false;
+    }
     
     return true;
   }
@@ -52,9 +55,10 @@ class Course {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("[");
-    for(Course c: prereqs) {
-      sb.append(c.id + " ");
-    }
+    sb.append(prereqs.stream()
+      .map(x -> Integer.toString(x.id))
+      .collect(Collectors.joining(", "))
+    );
     sb.append("]");
     return sb.toString();
   }
