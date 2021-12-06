@@ -71,7 +71,7 @@ class Solution {
     
     @Override
     public int hashCode() {
-      int hash = 1;
+      int hash = 17;
       hash = hash*31 + i;
       hash = hash*31 + m;
       hash = hash*31 + n;
