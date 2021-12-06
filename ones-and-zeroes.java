@@ -11,7 +11,7 @@ class Solution {
   int findMaxForm(Metadata[] strs, int zeroAmount, int oneAmount, int i, Map<Key,Integer> mem) {
     int n = strs.length;
     if(i >= n) return 0;
-    // it is possible to have "0000" which means that oneAmount=0, but we can still add more elements
+    // it is possible to have "0000" which means event if oneAmount=0, we still need to keep searching
     if (zeroAmount == 0 && oneAmount == 0) return 0;
     Key k = new Key(i, zeroAmount, oneAmount);
     if(mem.containsKey(k)) return mem.get(k);
