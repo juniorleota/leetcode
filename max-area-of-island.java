@@ -13,7 +13,7 @@ class Solution {
         }
       }
     }
-    return uf.max;
+    return uf.maxSize;
   }
   
   void checkUp(UnionFind uf, int i, int j) {
@@ -38,7 +38,7 @@ class Solution {
 
   class UnionFind {
     Coord[][] coords;
-    int max;
+    int maxSize;
     
     public UnionFind(int[][] mat) {
       int n = mat.length;
@@ -49,7 +49,7 @@ class Solution {
         for(int j = 0; j < m; j++) {
           int curr = mat[i][j];
           if (curr == 1) {
-            max = 1;
+            maxSize = 1;
             coords[i][j] = new Coord(i, j);
           }
         }
@@ -67,7 +67,7 @@ class Solution {
         rootB.j = rootA.j;
         rootA.size += rootB.size;
         rootB.size = 0;
-        max = Math.max(max, rootA.size);
+        maxSize = Math.max(maxSize, rootA.size);
       }
     }
     
